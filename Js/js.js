@@ -5,7 +5,7 @@ document.getElementById('regForm').onsubmit = function(e) {
 
             if (pass !== conf) {
                 e.preventDefault(); 
-                alertBox.innerText = "⚠️ عذراً.. كلمتا المرور غير متطابقتين!";
+                alertBox.innerText = "Passwords do not match!";
                 alertBox.style.display = "block";
                 
                 

@@ -48,13 +48,9 @@ if (!$result) {
         <div class="collapse navbar-collapse" id="navbarNav">
             <div class="navbar-nav ms-auto align-items-center">
                 <?php if ($is_logged_in): ?>
-                   
-                    <span class="nav-link text-info">Welcome, <a href="profile.php?id=<?php echo $_SESSION['user_id']; ?>" class="text-info text-decoration-none fw-bold"><?php echo htmlspecialchars($current_user); ?></a></span>
+                    <span class="nav-link text-info">Welcome, <?php echo htmlspecialchars($_SESSION['username'] ?? 'User'); ?></span>
                     <a href="add_article.php" class="nav-link">Create Article</a>
                     <a href="users.php" class="nav-link">Users</a>
-                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                        <a href="admin_dashboard.php" class="btn btn-warning btn-sm me-2 fw-bold">Dashboard</a>
-                    <?php endif; ?>
                     <a href="logout.php" class="btn btn-danger btn-sm ms-3 glow-on-hover">Logout</a>
                 <?php else: ?>
                     <a href="users.php" class="nav-link">Users</a>

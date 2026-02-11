@@ -48,6 +48,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body class="d-flex align-items-center justify-content-center" style="min-height: 100vh;">
     <div class="glass-card p-4" style="width: 100%; max-width: 500px;">
         <h2 class="text-center mb-4">➕ New Article</h2>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="navbar-nav ms-auto align-items-center">
+                <a href="index.php" class="nav-link">Home</a>
+                <a href="users.php" class="nav-link">Users</a>
+                <a href="logout.php" class="btn btn-danger btn-sm ms-3 glow-on-hover">Logout</a>
+            </div>
+        </div>
         <form method="POST">
             <div class="mb-3">
                 <input type="text" class="form-control" name="title" placeholder="Article Title" required>

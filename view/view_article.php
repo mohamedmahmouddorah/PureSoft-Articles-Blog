@@ -99,14 +99,32 @@ function render_comment_tree($comment_id, $comments_by_id, $children, $article_i
     // Actions Row
     if ($user_id) {
         echo '<button type="button" onclick="toggleReply(' . (int)$comment['id'] . ')" class="reply-btn fw-bold text-white-50">Reply</button>';
+        
+        if ($user_id == (int)$comment['user_id']) {
+             echo '<button type="button" onclick="toggleEdit(' . (int)$comment['id'] . ')" class="comment-action-link text-warning" style="background:none; border:none; padding:0; margin-left:10px;">Edit</button>';
+        }
     }
 
     $can_manage = $user_id && (($user_id == (int)$comment['user_id']) || $user_role === 'admin');
     if ($can_manage) {
-        echo '<a href="edit_comment.php?id=' . (int)$comment['id'] . '" class="comment-action-link comment-action-edit text-info">Edit</a>';
-        echo '<a href="delete_comment.php?id=' . (int)$comment['id'] . '" class="comment-action-link comment-action-delete text-danger" onclick="return confirm(\'Delete comment?\')">Delete</a>';
+        // echo '<a href="edit_comment.php?id=' . (int)$comment['id'] . '" class="comment-action-link comment-action-edit text-info">Edit</a>'; // Removed old link
+        echo '<a href="delete_comment.php?id=' . (int)$comment['id'] . '" class="comment-action-link comment-action-delete text-danger" onclick="return confirm(\'Delete comment?\')" style="margin-left:10px;">Delete</a>';
     }
     echo '</div>'; // End actions
+
+    // Edit Form (Hidden by default)
+    if ($user_id == (int)$comment['user_id']) {
+        echo '<div id="edit-form-' . (int)$comment['id'] . '" class="reply-form">';
+        echo '<form action="process_edit_comment.php" method="POST">';
+        echo '<input type="hidden" name="comment_id" value="' . (int)$comment['id'] . '">';
+        echo '<div class="input-group mt-2">';
+        echo '<textarea name="comment" class="form-control" rows="1" required>' . htmlspecialchars($comment['comment']) . '</textarea>';
+        echo '<button type="submit" class="btn btn-warning">Update</button>';
+        echo '<button type="button" class="btn btn-secondary" onclick="toggleEdit(' . (int)$comment['id'] . ')">Cancel</button>';
+        echo '</div>';
+        echo '</form>';
+        echo '</div>';
+    }
 
     // Reply Form
     if ($user_id) {
@@ -164,8 +182,10 @@ function render_comment_tree($comment_id, $comments_by_id, $children, $article_i
                 <a href="index.php" class="nav-link">Home</a>
                 <?php if ($user_id): ?>
                     <a href="add_article.php" class="nav-link">Create Article</a>
+                    <a href="users.php" class="nav-link">Users</a>
                     <a href="logout.php" class="btn btn-danger btn-sm ms-3 glow-on-hover">Logout</a>
                 <?php else: ?>
+                    <a href="users.php" class="nav-link">Users</a>
                     <a href="login.php" class="btn btn-info btn-sm ms-3 glow-on-hover">Login</a>
                 <?php endif; ?>
             </div>
@@ -236,6 +256,15 @@ function render_comment_tree($comment_id, $comments_by_id, $children, $article_i
 <script>
     function toggleReply(id) {
         var form = document.getElementById('reply-form-' + id);
+        if (form.style.display === "none" || form.style.display === "") {
+            form.style.display = "block";
+        } else {
+            form.style.display = "none";
+        }
+    }
+
+    function toggleEdit(id) {
+        var form = document.getElementById('edit-form-' + id);
         if (form.style.display === "none" || form.style.display === "") {
             form.style.display = "block";
         } else {
